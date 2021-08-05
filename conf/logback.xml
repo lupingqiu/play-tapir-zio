@@ -1,0 +1,51 @@
+<!-- https://www.playframework.com/documentation/latest/SettingsLogger -->
+<configuration>
+
+  <conversionRule conversionWord="coloredLevel" converterClass="play.api.libs.logback.ColoredLevel" />
+
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${application.home:-.}/logs/application.log</file>
+    <!--<file>/var/logs/ptz/application.log</file>-->
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!--fileNamePattern>${application.home:-.}/logs/application.log.%d{yyyyMMdd}</fileNamePattern-->
+      <fileNamePattern>/var/logs/ptz/application.log.%d{yyyyMMdd}</fileNamePattern>
+
+      <!-- Daily rollover with compression -->
+      <!--<fileNamePattern>/var/log/${SERVICE_NAME:-dataflow}/${APP_VERSION:-1.0}/${ENVIRONMENT:-dev}/base/${MESOS_TASK_ID:-task}/${SERVICE_NAME:-dataflow}.log.%d{${system.logging.bakfileDatePattern}}</fileNamePattern>-->
+      <!-- keep 30 days worth of history -->
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>
+        [%d{yyyy-MM-dd HH:mm:ss.SSS,GMT+8}] [%-5level] [%t] [%c] [-[%msg]-] %n
+      </pattern>
+    </encoder>
+  </appender>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>
+        [%d{yyyy-MM-dd HH:mm:ss.SSS,GMT+8}] [%-5level] [%t] [%c] [-[%msg]-] %n
+      </pattern>
+    </encoder>
+  </appender>
+
+  <appender name="ASYNCFILE" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="FILE" />
+  </appender>
+
+  <appender name="ASYNCSTDOUT" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="STDOUT" />
+  </appender>
+
+  <logger name="topsdk" level="OFF" />
+
+  <logger name="play" level="INFO" />
+  <logger name="application" level="INFO" />
+
+  <root level="INFO">
+    <appender-ref ref="ASYNCFILE" />
+    <appender-ref ref="ASYNCSTDOUT" />
+  </root>
+
+</configuration>
