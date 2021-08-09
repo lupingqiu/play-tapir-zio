@@ -1,6 +1,7 @@
 package repositories
 
 import java.sql.Timestamp
+import java.time.LocalDateTime
 
 import javax.inject.{Inject, Singleton}
 import models.{Book, RepoError}
@@ -15,14 +16,15 @@ import scala.concurrent.Future
   */
 @Singleton
 class BookRepository @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
-  extends HasDatabaseConfigProvider[JdbcProfile]{
+  extends HasDatabaseConfigProvider[JdbcProfile] with JsonMapper{
 
   import profile.api._
 
   private class BookTable(tag:Tag) extends Table[Book](tag,"PTZ_BOOK"){
     def id = column[Long]("id",O.PrimaryKey,O.AutoInc)
     def title = column[String]("title")
-    def published = column[Timestamp]("published")
+
+    def published = column[LocalDateTime]("published")(timeMapper)
     override def * = (id,title,published) <> ((Book.apply _).tupled,Book.unapply)
   }
 
@@ -30,6 +32,15 @@ class BookRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
 
   def getById(id:Long): Future[Seq[Book]] ={
     db.run(books.filter(_.id===id).result)
+  }
+
+  def getByIdZIO(id:Long): ZIO[Any, RepoError, Seq[Book]] ={
+
+    ZIO.fromFuture(_=>db.run(books.filter(_.id===id).result)).refineOrDie{
+      case e:Exception =>
+        RepoError(e)
+    }
+
   }
 
   def all(): ZIO[Any, RepoError, Seq[Book]] = {

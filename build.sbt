@@ -28,9 +28,15 @@ libraryDependencies += "com.softwaremill.sttp.tapir" %% "tapir-play-server" % ta
 libraryDependencies += "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs" % tapirVersion
 libraryDependencies += "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % tapirVersion
 libraryDependencies += "com.softwaremill.sttp.tapir" %% "tapir-json-circe" % tapirVersion
+libraryDependencies += "com.softwaremill.sttp.tapir" %% "tapir-json-play" % tapirVersion
+
 // Swagger UI for Play
 // You can also host Swagger UI by yourself and get rid of this dependency
 libraryDependencies += "com.softwaremill.sttp.tapir" %% "tapir-swagger-ui-play" % tapirVersion
+//libraryDependencies += "com.softwaremill.sttp.tapir" %% "tapir-zio" % tapirVersion  excludeAll(
+//  ExclusionRule(organization = "dev.zio")
+//)
+
 
 //libraryDependencies += "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.10.5"
 

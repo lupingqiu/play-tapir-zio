@@ -13,19 +13,13 @@ import scala.concurrent.ExecutionContext
   * Created by luping.qiu in 11:06 AM 2021/8/5
   */
 @Singleton
-class BookController @Inject()(bookService: BookService, val controllerComponents: ControllerComponents)(implicit ex:ExecutionContext) extends BaseController {
+class ZioController @Inject()(bookService: BookService, val controllerComponents: ControllerComponents)(implicit ex:ExecutionContext) extends BaseController {
 
   import ZIOAction._
 
   private def jsonValidation[A](jsValue: JsValue)(implicit reads: Reads[A]) =
     IO.fromEither(jsValue.validate[A].asEither).mapError(e => ValidateError(e.toString))
 
-
-  def getById(id:Long)= Action.async{_=>
-    bookService.getById(id).map{bs=>
-      Ok(Json.toJson(bs))
-    }
-  }
 
   def all(): Action[AnyContent] = Action.zio{ _=>
     bookService.all()

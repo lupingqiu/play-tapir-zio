@@ -1,9 +1,13 @@
 package services
 
+import java.time.LocalDateTime
+
 import javax.inject.{Inject, Singleton}
-import models.{Book, PtzError, ValidateError}
+import models.{Book, PtzError, RepoError, ValidateError}
 import repositories.BookRepository
 import zio.{IO, ZIO}
+
+import scala.concurrent.Future
 
 
 /**
@@ -12,7 +16,10 @@ import zio.{IO, ZIO}
 @Singleton
 class BookService @Inject()(bookRepo:BookRepository) {
 
-  def getById(id:Long)= bookRepo.getById(id)
+  def getById(id:Long): Future[Seq[Book]] = bookRepo.getById(id)
+
+  def getByIdZIO(id:Long): ZIO[Any, RepoError, Seq[Book]] = bookRepo.getByIdZIO(id)
+
 
   def all()= bookRepo.all()
 
@@ -32,7 +39,7 @@ class BookService @Inject()(bookRepo:BookRepository) {
   }
 
   def validatePublished(book:Book): Either[ValidateError, Book] ={
-    if(book.published.getTime > System.currentTimeMillis()){
+    if(book.published.isAfter(LocalDateTime.now) ){
       Left(ValidateError("publish time is error"))
     }else Right(book)
   }
