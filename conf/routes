@@ -5,13 +5,17 @@
 
 # An example controller showing a sample home page
 GET     /                                     controllers.HomeController.index()
+
+# play
 GET     /play/get/:id                         controllers.HomeController.getById(id:Long)
 
 
+# play+zio
 GET     /zio/book/all                         controllers.ZioController.all()
 POST    /zio/book                             controllers.ZioController.create()
 PUT     /zio/book/:id                         controllers.ZioController.update(id:Long)
 
+# play+zio+tapir请求 /ptz
 ->      /                                     endpoints.ApiRouter
 
 # Map static resources from the /public folder to the /assets URL path

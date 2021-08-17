@@ -39,10 +39,16 @@ class ApiRouter @Inject()(ptzEndpoints: PtzEndpoints,ptzController: PTZControlle
     playServerInterpreter.toRoutes(zpt)
   }
 
+  val getAllUsers: Routes ={
+    val zpt = ptzEndpoints.getAllUsers.serverLogic[Future](_=>ptzController.getAllUsers())
+    playServerInterpreter.toRoutes(zpt)
+  }
+
   private val openApiDocs: OpenAPI = OpenAPIDocsInterpreter().toOpenAPI(List(
     ptzEndpoints.getByIdPoint,
     ptzEndpoints.createPoint,
-    ptzEndpoints.updatePoint
+    ptzEndpoints.updatePoint,
+    ptzEndpoints.getAllUsers
   ),"Tapir Play Sample", "1.0.0")
 
   val openApiYml: String = openApiDocs.toYaml
@@ -52,5 +58,5 @@ class ApiRouter @Inject()(ptzEndpoints: PtzEndpoints,ptzController: PTZControlle
 
   def openApiRoute() = new SwaggerPlay(openApiYml).routes
 
-  override def routes: Routes = openApiRoute().orElse(getByIdRoute).orElse(createRoute).orElse(updateRoute)
+  override def routes: Routes = openApiRoute().orElse(getByIdRoute).orElse(createRoute).orElse(updateRoute).orElse(getAllUsers)
 }

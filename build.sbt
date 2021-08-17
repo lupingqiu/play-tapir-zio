@@ -13,12 +13,18 @@ libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick" % "5.0.0",
   "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0",
-  "mysql" % "mysql-connector-java" % "5.1.41",
-  evolutions
+//  "mysql" % "mysql-connector-java" % "5.1.41",
+  "mysql" % "mysql-connector-java" % "8.0.17",
+  "io.getquill" %% "quill-jdbc" % "3.9.0",
+  "io.getquill" %% "quill-jdbc-zio" % "3.9.0",
+  "io.getquill" %% "quill-zio" % "3.9.0",
+    evolutions
 )
 
 
-libraryDependencies += "dev.zio" %% "zio" % "1.0.0-RC12-1"
+//libraryDependencies += "dev.zio" %% "zio" % "1.0.0-RC12-1"
+libraryDependencies += "dev.zio" %% "zio" % "1.0.9"
+
 
 val tapirVersion = "0.19.0-M4"
 // Tapir

@@ -6,19 +6,19 @@ import zio._
   */
 object ZIOAction {
 
-  val runtime = new DefaultRuntime (){}
+  val runtime = zio.Runtime.default
 
   implicit class ActionBuilderOps[+R[_], B](actionBuilder: ActionBuilder[R, B]) {
 
     def zio[E](zioActionBody: R[B] => IO[E, Result]): Action[B] = actionBuilder.async { request =>
-      runtime.unsafeRun {
-        ioToTask(zioActionBody(request)).toFuture
+      runtime.unsafeRunToFuture{
+        ioToTask(zioActionBody(request))
       }
     }
 
     def zio[E, A](bp: BodyParser[A])(zioActionBody: R[A] => IO[E, Result]): Action[A] = actionBuilder(bp).async { request =>
-      runtime.unsafeRun(
-        ioToTask(zioActionBody(request)).toFuture
+      runtime.unsafeRunToFuture(
+        ioToTask(zioActionBody(request))
       )
     }
 

@@ -3,6 +3,7 @@ package repositories
 import java.sql.Timestamp
 import java.time.LocalDateTime
 
+import io.getquill.context.ZioJdbc.DataSourceLayer
 import javax.inject.{Inject, Singleton}
 import models.{Book, RepoError}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
@@ -36,11 +37,11 @@ class BookRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
 
   def getByIdZIO(id:Long): ZIO[Any, RepoError, Seq[Book]] ={
 
-    ZIO.fromFuture(_=>db.run(books.filter(_.id===id).result)).refineOrDie{
-      case e:Exception =>
+    for{
+      ret<-ZIO.fromFuture(_ =>db.run(books.filter(_.id===id).result)).refineOrDie{ case e:Exception =>
         RepoError(e)
-    }
-
+      }
+    }yield ret
   }
 
   def all(): ZIO[Any, RepoError, Seq[Book]] = {
