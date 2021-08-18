@@ -11,14 +11,11 @@ libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-slick" % "5.0.0",
-  "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0",
-//  "mysql" % "mysql-connector-java" % "5.1.41",
   "mysql" % "mysql-connector-java" % "8.0.17",
   "io.getquill" %% "quill-jdbc" % "3.9.0",
   "io.getquill" %% "quill-jdbc-zio" % "3.9.0",
   "io.getquill" %% "quill-zio" % "3.9.0",
-    evolutions
+  evolutions,jdbc
 )
 
 

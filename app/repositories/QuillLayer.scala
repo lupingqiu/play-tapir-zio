@@ -17,6 +17,11 @@ object QuillLayer extends MysqlZioJdbcContext(Literal){
   lazy val config = JdbcContextConfig(LoadConfig("ctx")).dataSource
 
   lazy val hikariDataSource: HikariDataSource = new HikariDataSource(config)
-  lazy val zioDs: ZLayer[Any, Throwable, Has[DataSource with Closeable]] = DataSourceLayer.fromDataSource(hikariDataSource)
+  lazy val  zioDs: ZLayer[Any, Throwable, Has[DataSource with Closeable]] = DataSourceLayer.fromDataSource(hikariDataSource)
 
-}
+
+
+  lazy val zioDs: ZLayer[Any, Throwable, Has[DataSource with Closeable]] = DataSourceLayer.fromPrefix("ctx")
+
+
+//}

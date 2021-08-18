@@ -1,10 +1,7 @@
 package controllers
 
 import javax.inject._
-import play.api._
-import play.api.libs.json.Json
 import play.api.mvc._
-import services.BookService
 
 import scala.concurrent.ExecutionContext
 
@@ -13,7 +10,7 @@ import scala.concurrent.ExecutionContext
  * application's home page.
  */
 @Singleton
-class HomeController @Inject()(bookService: BookService, val controllerComponents: ControllerComponents)(implicit ex:ExecutionContext) extends BaseController {
+class HomeController @Inject()(val controllerComponents: ControllerComponents)(implicit ex:ExecutionContext) extends BaseController {
   /**
    * Create an Action to render an HTML page.
    *
@@ -25,9 +22,4 @@ class HomeController @Inject()(bookService: BookService, val controllerComponent
     Ok(views.html.index())
   }
 
-  def getById(id:Long)= Action.async{_=>
-    bookService.getById(id).map{bs=>
-      Ok(Json.toJson(bs))
-    }
-  }
 }
