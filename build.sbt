@@ -18,7 +18,7 @@ libraryDependencies ++= Seq(
 )
 
 
-libraryDependencies += "dev.zio" %% "zio" % "1.0.0-RC12-1"
+libraryDependencies += "dev.zio" %% "zio" % "1.0.9"
 
 val tapirVersion = "0.19.0-M4"
 // Tapir
