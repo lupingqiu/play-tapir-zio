@@ -2,30 +2,19 @@ package controllers
 
 import javax.inject.Inject
 import models._
-import play.api.{Logger, Logging}
-import services.{BookService, UserService}
-import zio.{CancelableFuture, ZIO}
+import play.api.Logging
+import services.BookService
+import zio.ZIO
 
 import scala.concurrent.{ExecutionContext, Future}
 
 /**
   * Created by luping.qiu in 10:51 AM 2021/8/6
   */
-class PTZController @Inject()(bookService: BookService,userService: UserService)(implicit ex:ExecutionContext) extends Logging{
+class PTZController @Inject()(bookService: BookService)(implicit ex:ExecutionContext) extends Logging{
 
   lazy val runtime = zio.Runtime.default
 
-  def getAllUsers(): CancelableFuture[Either[OutPutError, Vector[User]]] = {
-    runtime.unsafeRunToFuture {
-      userService.all().fold(
-        fail =>{
-          logger.info(s"getAllUsers error:${fail.getMessage}",fail)
-          Left(OutPutError(fail.getMessage))
-        },
-        data => Right(data.toVector)
-      )
-    }
-  }
   /**
     * play zio tapir
     * @param id

@@ -1,14 +1,12 @@
 package repositories
 
-import java.sql.Timestamp
 import java.time.LocalDateTime
 
-import io.getquill.context.ZioJdbc.DataSourceLayer
 import javax.inject.{Inject, Singleton}
 import models.{Book, RepoError}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
-import zio.{ZIO, ZManaged}
+import zio.ZIO
 
 import scala.concurrent.Future
 
