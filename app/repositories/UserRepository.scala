@@ -12,7 +12,7 @@ import zio.{Task, ZIO, ZLayer, ZManaged}
 @Singleton
 class UserRepository @Inject()(database:Database)  extends MysqlZioJdbcContext(Literal){
 
-  lazy val zioCon = ZLayer.fromManaged(ZManaged.fromAutoCloseable(Task(database.getConnection)))
+  def zioCon = ZLayer.fromManaged(ZManaged.fromAutoCloseable(Task(database.getConnection)))
 
   def all(): ZIO[zio.ZEnv, Throwable, List[User]] ={
     val users = quote{
